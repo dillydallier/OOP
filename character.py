@@ -4,11 +4,16 @@ from combat import Combat
 
 
 class Character(Combat):
+    """gives default stats for player"""
     attack_limit = 10
     experience = 0
     base_hit_points = 10
 
     def attack(self):
+        """lets player attack
+        If the player attacks using a sword, attack limit adds 1
+        If the player attacks using an axe, attack limit adds 2
+        """
         roll = random.randint(1, self.attack_limit)
         if self.weapon == "sword":
             roll += 1
@@ -17,6 +22,10 @@ class Character(Combat):
         return roll > 4
 
     def get_weapon(self):
+        """lets player choose a weapon.
+        If the player chooses anything but a sword, axe, or a bow,
+        lets him choose again.
+        """
         weapon_choice = input("Weapon ([S]word,[A]xe,[B]ow): ").lower()
 
         if weapon_choice in "sab":
@@ -30,6 +39,7 @@ class Character(Combat):
             return self.get_weapon()
 
     def __init__(self, **kwargs):
+        """asks for user input for name"""
         self.name = input("Name: ")
         self.weapon = self.get_weapon()
         self.hit_points = self.base_hit_points
@@ -38,14 +48,17 @@ class Character(Combat):
             setattr(self, key, value)
 
     def __str__(self):
+        """prints message at the beginning of each turn"""
         return "{}, HP: {}, XP: {}".format(
             self.name,
             self.hit_points,
             self.experience)
 
     def rest(self):
+        """lets the plaer rest and gain one point"""
         if self.hit_points < self.base_hit_points:
             self.hit_points += 1
 
     def leveled_up(self):
+        """lets the player leveled up and gain 5 experience points"""
         return self.experience >= 5

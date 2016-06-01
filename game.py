@@ -7,8 +7,10 @@ from monster import Troll
 
 
 class Game:
+    """defines the game"""
 
     def setup(self):
+        """defines players and monsters"""
 
         self.player = Character()
         self.monsters = [
@@ -18,6 +20,7 @@ class Game:
         self.monster = self.get_next_monster()
 
     def get_next_monster(self):
+        """gets a new monster"""
 
         try:
             return self.monsters.pop(0)
@@ -25,6 +28,11 @@ class Game:
             return None
 
     def monster_turn(self):
+        """at each turn, monsters can attack, dodge, or do nothing
+        If monsters attack, player may get hit.
+        If monsters dodge, player's attack may be unsuccessful.
+        If monsters do nothing, player can choose to attack.
+        """
         # check to see if the monster attacks
         if self.monster.attack():
             # if so, tell the player
@@ -47,7 +55,7 @@ class Game:
             print("{} isn't attacking this turn.".format(self.monster))
 
     def player_turn(self):
-        # let the player attack, rest, or quit
+        """lets the player attack, rest, or quit"""
         player_move = input("[A]ttack, [R]est or [Q]uit? ").lower()
         # if they attack
         if player_move == "a":
@@ -85,6 +93,9 @@ class Game:
             self.player_turn()
 
     def cleanup(self):
+        """lets player gain experience when the monster dies
+        gets a new monster
+        """
         # if the monster has no more hit points
         if self.monster.hit_points <= 0:
             # up the player's experience
@@ -95,6 +106,9 @@ class Game:
             self.monster = self.get_next_monster()
 
     def __init__(self):
+        """lets player play the game
+        prints out win/lose messages at the end of each run
+        """
         self.setup()
 
         while self.player.hit_points and (self.monster or self.monsters):
